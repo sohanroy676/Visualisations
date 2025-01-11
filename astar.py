@@ -124,6 +124,15 @@ class App:
     instance = None
 
     def __init__(self, WIN: pygame.Surface) -> None:
+        print("Starting the Visualisation for A* Pathfinding Algorithm")
+        print("ESC to Quit")
+        print("Enter to start solving")
+        print("BACKSPACE | R to Clear")
+        print("LEFT_CLICK to place Wall")
+        print("RIGHT_CLICK to remove Wall")
+        print("SCROLL_WHEEL_UP to place the Start Point")
+        print("SCROLL_WHEEL_DOWN to place the End Point")
+        
         App.instance = self
 
         self.WIN: pygame.Surface = WIN
@@ -195,14 +204,6 @@ class App:
         pygame.display.set_caption("Visualizations")
 
 if __name__ == "__main__":
-    print("Starting the Visualisation for A* Pathfinding Algorithm")
-    print("ESC to Quit")
-    print("Enter to start solving")
-    print("BACKSPACE | R to Clear")
-    print("LEFT_CLICK to place Wall")
-    print("RIGHT_CLICK to remove Wall")
-    print("SCROLL_WHEEL_UP to place the Start Point")
-    print("SCROLL_WHEEL_DOWN to place the End Point")
     WIN: pygame.Surface = pygame.display.set_mode((App.WIDTH, App.HEIGHT))
     app: App = App(WIN)
     app.mainloop()
