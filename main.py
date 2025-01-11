@@ -103,5 +103,5 @@ class MainApp:
         pygame.quit()
 
 if __name__ == "__main__":
-    mainApp: MainApp = MainApp()
+    mainApp: MainApp = MainApp(True)
     mainApp.mainloop()
