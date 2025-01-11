@@ -17,6 +17,10 @@ class App:
     COLORS: tuple[tuple[int]] = ((100, 100, 100), (255, 255, 255))
 
     def __init__(self, WIN: pygame.Surface) -> None:
+        print("Starting the Marching Squares")
+        print("ESC to Quit")
+        print("Enter to pause/continue")
+
         self.WIN: pygame.Surface = WIN
         WINRect: pygame.Rect = self.WIN.get_rect()
         self.SURF: pygame.Surface = pygame.Surface((App.WIDTH, App.HEIGHT))
@@ -100,11 +104,12 @@ class App:
                             case pygame.K_ESCAPE:
                                 return True
                             case pygame.K_RETURN:
-                                paused = not paused
+                                self.paused = not self.paused
             
-            self.SURF.fill(App.COLORS[0])
-            self.next()
-            self.update()
+            if not self.paused:
+                self.SURF.fill(App.COLORS[0])
+                self.next()
+                self.update()
 
 if __name__ == "__main__":
     WIN: pygame.Surface = pygame.display.set_mode((App.WIDTH, App.HEIGHT))
