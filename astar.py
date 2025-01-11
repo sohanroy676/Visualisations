@@ -201,7 +201,7 @@ class App:
         
     
     def quit(self):
-        pygame.display.set_caption("Visualizations")
+        pygame.display.set_caption("Visualisations")
 
 if __name__ == "__main__":
     WIN: pygame.Surface = pygame.display.set_mode((App.WIDTH, App.HEIGHT))

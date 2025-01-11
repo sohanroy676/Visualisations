@@ -132,44 +132,46 @@ class NQueens:
         self.start = 0
 
 class App:
-    def __init__(self) -> None:
-        print("Running the N-Queens Visualisation")
-        self.n: int = int(input("Enter N: "))
-        self.cell_size = 50
+    n: int = 8
+    cell_size: int = 50
+    surf_size: int = n*cell_size
+    def __init__(self, WIN: pygame.Surface) -> None:
+        print("Starting the N-Queens Visualisation")
         
         # self.vis: NQueens | NQueens_BitManip = NQueens_BitManip(self.n)
-        self.vis: NQueens | NQueens_BitManip = NQueens(self.n)
+        self.vis: NQueens | NQueens_BitManip = NQueens(App.n)
 
-        self.win_width: int = self.n*self.cell_size
-        self.win_height: int = self.n*self.cell_size
-        self.WIN: pygame.Surface = pygame.display.set_mode((self.win_width, self.win_height))
+        self.WIN: pygame.Surface = WIN
         pygame.display.set_caption("N-Queens Visualisation")
 
-        self.img: pygame.Surface = pygame.image.load("W_Queen.png")
+        self.img: pygame.Surface = pygame.image.load("assets\\W_Queen.png")
         self.img.set_colorkey((181, 230, 29))
-        self.img = pygame.transform.scale(self.img, (self.cell_size, self.cell_size))
+        self.img = pygame.transform.scale(self.img, (App.cell_size, App.cell_size))
 
-        self.surf: pygame.Surface = pygame.Surface((self.cell_size*self.n, self.cell_size*self.n))
+        self.surf: pygame.Surface = pygame.Surface((App.surf_size, App.surf_size))
         self.rect: pygame.Rect = self.surf.get_rect()
-        self.rect.center = (self.win_width//2, self.win_height//2)
+        win_rect: pygame.Rect = WIN.get_rect()
+        self.rect.center = (win_rect.width//2, win_rect.height//2)
 
-        self.board: pygame.Surface = pygame.Surface((self.cell_size*self.n, self.cell_size*self.n))
+        self.board: pygame.Surface = pygame.Surface((App.surf_size, App.surf_size))
         self.board.fill((235, 236, 208))
 
-        [pygame.draw.rect(self.board, (119, 149, 86), (c*self.cell_size, r*self.cell_size, self.cell_size, self.cell_size))
-                            for r in range(self.n) for c in range(self.n) if (r + c)%2]
+        for r in range(App.n):
+            for c in range(App.n):
+                if (r + c)%2 == 0: continue
+                pygame.draw.rect(self.board, (119, 149, 86), (c*App.cell_size, r*App.cell_size, App.cell_size, App.cell_size))
 
         self.timer: int = 0
         self.time: int = 500
-
-        self.test_time()
     
     def draw_queens(self) -> None:
-        [self.surf.blit(self.img, (col*self.cell_size, row*self.cell_size)) for row, col in enumerate(self.vis.queens)]
+        for row, col in enumerate(self.vis.queens):
+            self.surf.blit(self.img, (col*App.cell_size, row*App.cell_size))
     
     def draw_queen_moves(self) -> None:
-        [pygame.draw.rect(self.surf, (255, 0, 0), (c*self.cell_size, r*self.cell_size, self.cell_size, self.cell_size))
-            for r in range(self.n) for c in self.vis.get_not_possible(r)]
+        for r in range(App.n):
+            for c in self.vis.get_not_possible(r):
+                pygame.draw.rect(self.surf, (255, 0, 0), (c*App.cell_size, r*App.cell_size, App.cell_size, App.cell_size))
 
     def draw(self) -> None:
         self.surf.blit(self.board, (0, 0))
@@ -180,7 +182,7 @@ class App:
     
     def test_time(self) -> None:
         from time import time
-        vis_bitm: NQueens_BitManip = NQueens_BitManip(self.n)
+        vis_bitm: NQueens_BitManip = NQueens_BitManip(App.n)
         start: int = time()
         while not vis_bitm.update():
             pass
@@ -194,20 +196,35 @@ class App:
         end = time()
         print(f"Normal took: {end - start}")
 
-    def mainloop(self) -> None:
-        run: bool = True
-        while run:
-            if pygame.event.get(pygame.QUIT):
-                run = False
+    def mainloop(self) -> bool:
+        while True:
+            for event in pygame.event.get():
+                match event.type:
+                    case pygame.QUIT:
+                        return False
+
+                    case pygame.KEYDOWN:
+                        match event.key:
+                            case pygame.K_ESCAPE:
+                                return True
+                    
+                    case pygame.MOUSEBUTTONDOWN:
+                        match event.button:
+                            case 4:
+                                self.time = max(self.time - 10, 1)
+                            case 5:
+                                self.time += 10
 
             self.timer += 1
             if self.timer >= self.time:
                 self.vis.update()
                 self.timer %= self.time
             self.draw()
-
-        pygame.quit()
+    
+    def quit(self) -> None:
+        pygame.display.set_caption("Visualisation")
 
 if __name__ == "__main__":
-    app: App = App()
+    WIN: pygame.Surface = pygame.display.set_mode((App.surf_size, App.surf_size))
+    app: App = App(WIN)
     app.mainloop()

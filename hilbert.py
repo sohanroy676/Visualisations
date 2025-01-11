@@ -82,4 +82,9 @@ class App:
                 self.index += 1
 
     def quit(self) -> None:
-        pygame.display.set_caption("Visualizations")
+        pygame.display.set_caption("Visualisations")
+
+if __name__ == "__main__":
+    WIN: pygame.Surface = pygame.display.set_mode((App.SURFDIM, App.SURFDIM))
+    app: App = App(WIN)
+    app.mainloop()
