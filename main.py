@@ -9,7 +9,7 @@ class MainApp:
     WIDTH: int = 1280
     HEIGHT: int = 720
     COLORS: dict = {"bg": pygame.Color("purple")}
-    APPS: list[str] = ["Astar", "Hilbert", "Life", "MarchSq", "Sand", "NQueens", "Sort"]
+    APPS: list[str] = ["Astar", "Hilbert", "Life", "MarchSq", "Sand", "NQueens", "Sort", "WolframCA"]
 
     def __init__(self, fullscreen: bool = False) -> None:
         '''Initializing the main app'''
@@ -103,5 +103,5 @@ class MainApp:
         pygame.quit()
 
 if __name__ == "__main__":
-    mainApp: MainApp = MainApp(True)
+    mainApp: MainApp = MainApp()
     mainApp.mainloop()
