@@ -11,15 +11,19 @@ class MainApp:
     COLORS: dict = {"bg": pygame.Color("purple")}
     APPS: list[str] = ["Astar", "Hilbert", "Life", "MarchSq", "Sand", "NQueens", "Sort"]
 
-    def __init__(self) -> None:
+    def __init__(self, fullscreen: bool = False) -> None:
         '''Initializing the main app'''
-        self.WIN: pygame.Surface = pygame.display.set_mode((MainApp.WIDTH, MainApp.HEIGHT), pygame.FULLSCREEN)
+        if fullscreen:
+            self.WIN: pygame.Surface = pygame.display.set_mode((MainApp.WIDTH, MainApp.HEIGHT), pygame.FULLSCREEN)
+        else:
+            self.WIN: pygame.Surface = pygame.display.set_mode((MainApp.WIDTH, MainApp.HEIGHT))
         pygame.display.set_caption("Visualisations")
         
         self.run: bool = True
         self.app = None
 
         self.loadUIElements()
+
     
     def clearScreen(self, update: bool = False) -> None:
         '''Clears the window by filling it the background color'''
@@ -42,19 +46,13 @@ class MainApp:
         self.labels.append(Label("Visualizations", (MainApp.WIDTH//2, MainApp.WIDTH//10), size = 80))
 
         # Adding the Buttons
-        self.buttons: list[Button] = []
-        self.buttons.append(Button("Quit", (MainApp.WIDTH//2, 9*MainApp.HEIGHT//10), self.quit, size = 30))
         cols: int = 4
-        for i, name in enumerate(MainApp.APPS):
-            button: Button = Button(name, (2*(i%cols + 1)*MainApp.WIDTH//10, 2*(2 + i//cols)*MainApp.HEIGHT//10), 
-                                    lambda: self.setApp(name.lower()))
-            self.buttons.append(button)
-        
         self.buttons: list[Button] = [
                 Button(name, (2*(i%cols + 1)*MainApp.WIDTH//10, 2*(2 + i//cols)*MainApp.HEIGHT//10), 
-                                lambda: self.setApp(name.lower()))
+                                self.setApp, funcArgs = (name.lower(),))
                 for i, name in enumerate(MainApp.APPS)
             ]
+        self.buttons.append(Button("Quit", (MainApp.WIDTH//2, 9*MainApp.HEIGHT//10), self.quit, size = 30))
 
     
     def drawUIElements(self) -> None:
@@ -71,24 +69,25 @@ class MainApp:
     def setApp(self, appName: str) -> None:
         '''Sets the app for visualization'''
         self.clearScreen(update=True)
+        print(f"Loading {appName}")
         exec(f"from {appName} import App\nself.app: App = App(self.WIN)")
     
     def quitApp(self) -> None:
         self.app.quit()
     
     def quit(self) -> None:
-        pygame.quit()
+        self.run = False
     
     def mainloop(self) -> None:
         while self.run:
             for event in pygame.event.get():
                 match event.type:
                     case pygame.QUIT:
-                        self.run = False
+                        self.quit()
                     case pygame.KEYDOWN:
                         match event.key:
                             case pygame.K_ESCAPE:
-                                self.run = False
+                                self.quit()
                     case pygame.MOUSEBUTTONDOWN:
                         for b in self.buttons:
                             if b.checkPress():
@@ -101,7 +100,7 @@ class MainApp:
             
             self.draw()
         
-        self.quit()
+        pygame.quit()
 
 if __name__ == "__main__":
     mainApp: MainApp = MainApp()
