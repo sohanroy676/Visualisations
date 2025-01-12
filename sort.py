@@ -142,6 +142,7 @@ class App:
                     case pygame.KEYDOWN:
                         match event.key:
                             case pygame.K_ESCAPE:
+                                self.quit()
                                 return True
                             case pygame.K_RETURN:
                                 self.sort.isSorting = not self.sort.isSorting
@@ -166,3 +167,4 @@ if __name__ == "__main__":
     WIN: pygame.Surface = pygame.display.set_mode((App.WIDTH, App.HEIGHT))
     app: App = App(WIN)
     app.mainloop()
+    pygame.quit()

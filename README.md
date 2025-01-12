@@ -1,5 +1,5 @@
 # Visualizations
-<h3>This project contains the following  visualisations in python using pygame module</h3>
+<h3>This project contains the following visualisations in python using pygame module</h3>
 <table>
 <li><b>Pathfinder</b>: An interactive implementation of the A-Star Pathfinding Algorithm</li>
 
@@ -18,4 +18,5 @@
 <li><b>Wolfram CA</b>: Visualising the 256 rules of the 1D Wolfram Cellular Automata</li>
 </table>
 
+These can be run individually or through main.py
 Modules required: pygame, opensimplex

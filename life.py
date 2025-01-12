@@ -152,3 +152,9 @@ class App:
                 self.life.place(self.getMousePos(), self.mouseState - 1)
 
             self.draw()
+
+if __name__ == "__main__":
+    WIN: pygame.Surface = pygame.display.set_mode((App.WIDTH, App.HEIGHT))
+    app: App = App(WIN)
+    app.mainloop()
+    pygame.quit()
