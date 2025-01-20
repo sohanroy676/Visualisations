@@ -9,9 +9,11 @@
 
 <li><b>Marching Squares</b>: Visualisating the Marching Squares algorithm</li>
 
+<li><b>N-Queens Problem</b>: Solved using Backtracking algorithm (normal and with bitmanipulation - for learning)</li>
+
 <li><b>Sand Simulation</b>: Simulating sand as a Cellular Automata</li>
 
-<li><b>N-Queens Problem</b>: Solved using Backtracking algorithm (normal and with bitmanipulation - for learning)</li>
+<li><b>Sudoku</b>: Solves the given Sudoku using Backtracking algorithm</li>
 
 <li><b>Sorting Algorithms</b>: Visualisating BubbleSort and SelectionSort</li>
 
